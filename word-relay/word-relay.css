@@ -1,0 +1,32 @@
+@font-face {
+  font-family: "KCCMurukmuruk";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCMurukmuruk.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 20px;
+  font-family: "KCCMurukmuruk";
+  text-align: center;
+}
+.entry,
+#order {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#order {
+  color: pink;
+}
+
+.word-title {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+#word {
+  color: hotpink;
+  font-size: 30px;
+}

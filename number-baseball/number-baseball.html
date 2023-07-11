@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>숫자 야구</title>
+  </head>
+  <body>
+    <form id="form">
+      <input type="text" id="input" />
+      <button>확인</button>
+    </form>
+    <div id="logs"></div>
+    <!-- logs 사용자가 입력한 것을 기록한 것 -->
+
+    <script>
+      const $input = document.querySelector("#input");
+      const $form = document.querySelector("#form");
+      const $logs = document.querySelector("#logs");
+
+      // 1부터 9까지 numbers에 push,
+      // 변수들을 모아두려면 객체{값의 이름을 붙여야할 때} or 배열[값을 단순히 모아놓을 때]
+      const numbers = []; // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      for (let n = 0; n < 9; n += 1) {
+        numbers.push(n + 1);
+      }
+
+      const answer = [];
+      // 4번 반복
+      for (let n = 0; n < 4; n += 1) {
+        const index = Math.floor(Math.random() * numbers.length); // 0 ~ 8정수
+        answer.push(numbers[index]); // index로 주기 위해 0 ~ 8까지로 뽑음
+        numbers.splice(index, 1); // 중복 피하기 위해 원래 있던 것 지워줌 splice(시작할 요소 index, 제거할 갯수)
+      }
+      console.log(answer);
+
+      // numbers [2, 4, 5, 6, 7, 8, 9]
+      // answer [3, 1, 4]
+    </script>
+  </body>
+</html>

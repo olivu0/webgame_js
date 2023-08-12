@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가위바위보</title>
+    <style>
+      #computer {
+        width: 142px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="computer"></div>
+    <div>
+      <button id="scissors" class="btn">가위</button>
+      <button id="rock" class="btn">바위</button>
+      <button id="paper" class="btn">보</button>
+    </div>
+    <div id="score">0</div>
+
+    <script>
+      const $computer = document.querySelector("#computer");
+      const $score = document.querySelector("#score");
+      const $scissors = document.querySelector("#scissors");
+      const $rock = document.querySelector("#rock");
+      const $paper = document.querySelector("#paper");
+      const IMG_URL = "./rsp.png";
+      $computer.style.background = `url(${IMG_URL}) 0 0`;
+      $computer.style.backgroundSize = "auto 200px";
+
+      const rspX = {
+        scissors: "0", // 가위
+        rock: "-220px", // 바위
+        paper: "-440px", // 보
+      };
+
+      // 일정시간(0.05초)마다 가위바위보 그림 바꾸기
+      let computerChoice = "scissors"; // 처음에 가위 나오도록 만듦
+      const changeComputerHand = () => {
+        if (computerChoice === "rock") {
+          // 데이터를 수정하는 부분
+          computerChoice = "scissors";
+        } else if (computerChoice === "scissors") {
+          computerChoice = "paper";
+        } else if (computerChoice === "paper") {
+          computerChoice = "rock";
+        }
+        // 화면을 수정하는 부분
+        // rspX.computerChoice(문자열) (x) === rspX["computerChoice"] (x)
+        $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+        $computer.style.backgroundSize = "auto 200px";
+      };
+
+      let intervalId = setInterval(changeComputerHand, 50);
+
+      // clickButton 5번 호출 -> setTimeout 5번 호출 -> setInterval 5번 호출, 1번 2번 3번 4번 5번 interval
+      // intervalId에는 5번 interval이 저장됨
+      // 그 다음에 버튼을 클릭하면 5번만 취소 clearInterval(5), 1~4는 취소되지 않고 계속 돌고 있음
+      const clickButton = () => {
+        clearInterval(intervalId); //손이 멈춤
+        $rock.removeEventListener("click", clickButton); // 버튼 클릭 못하게 만듬
+        $scissors.removeEventListener("click", clickButton);
+        $paper.removeEventListener("click", clickButton);
+        // 점수 계산 및 화면 표시
+        // 1초 후에 다시 손을 움직임
+        setTimeout(() => {
+          // bug 발생, button을 여러번 누르면 setTimeout이 여러개 등록됨(여러번 호출됨)
+          // clearInterval(intervalId);
+          intervalId = setInterval(changeComputerHand, 50); // 1초뒤에 버튼 클릭할 수 있게 만듬
+          $rock.addEventListener("click", clickButton);
+          $scissors.addEventListener("click", clickButton);
+          $paper.addEventListener("click", clickButton);
+        }, 1000);
+      };
+      // button클릭시 손이 멈춤(clearInterval)
+      $rock.addEventListener("click", clickButton);
+      $scissors.addEventListener("click", clickButton);
+      $paper.addEventListener("click", clickButton);
+    </script>
+  </body>
+</html>

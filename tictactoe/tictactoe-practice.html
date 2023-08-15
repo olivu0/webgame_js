@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>틱택토 게임</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // 이차원 배열 생성 - 반복문
+      const data = [];
+      for (let i = 0; i < 3; i++) {
+        data.push([]);
+      }
+
+      let turn = "O";
+
+      const $table = document.createElement("table");
+      for (let i = 0; i < 3; i++) {
+        const $tr = document.createElement("tr");
+        for (let j = 0; j < 3; j++) {
+          const $td = document.createElement("td");
+          $td.addEventListener("click", (event) => {
+            // 클릭하면 안되는 상황이면 removeEventListener 사용하지 말고 조건 줘서 조건에 해당되지 않으면 바로 종료되게 하는 것이 낫다
+            // 칸에 글자가 있나? 칸에 글자 들어있으면 return으로 함수 멈춤, 즉 실행되자마자 종료
+            if (event.target.textContent) return;
+            event.target.textContent = turn;
+            // 승부 확인
+            if (turn === "O") {
+              turn = "X";
+            } else if (turn === "X") {
+              turn = "O";
+            }
+          });
+          $tr.append($td);
+        }
+        $table.append($tr);
+      }
+      document.body.append($table);
+
+      // const body = document.body; 구조분해 할당 코드
+      // const { body } = document;
+      // const $table = document.createElement("table");
+      // const $result = document.createElement("div"); // 결과창
+      // const rows = [];
+
+      // for (let i = 1; i <= 3; i++) {
+      //   const $tr = document.createElement("tr");
+      //   const cells = [];
+      //   for (let j = 1; j <= 3; j++) {
+      //     const $td = document.createElement("td");
+      //     cells.push($td);
+      //     $tr.appendChild($td);
+      //   }
+      //   rows.push(cells);
+      //   $table.appendChild($tr);
+      // }
+      // body.appendChild($table);
+      // body.appendChild($result);
+
+      // 1분 퀴즈
+      // 1.
+      const obj = {
+        a: "hello",
+        b: {
+          c: "hi",
+          d: { e: "wow" },
+        },
+      };
+
+      const a = obj.a;
+      const c = obj.b.c;
+      const e = obj.b.d.e;
+
+      // 2.
+      const array = [];
+      for (let i = 0; i < 5; i++) {
+        const cells = [];
+        for (let j = 0; j < 4; j++) {
+          cells.push(1);
+        }
+        array.push(cells);
+      }
+      console.log(array);
+
+      // 3.
+      const arr = [1, "hello", null, undefined, false];
+      const some = arr.some((value) => value === null);
+      console.log(some);
+    </script>
+  </body>
+</html>

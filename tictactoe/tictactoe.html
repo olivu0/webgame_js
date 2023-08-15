@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>틱택토 게임</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // document: 객체, body: 객체안에 들어있는 속성(메소드)
+      // const body = document.body; (객체)구조분해 할당 코드
+      // 배열 구조분해 할당도 가능함. 갯수만 맞춰준다면
+      const { body } = document;
+      const $table = document.createElement("table");
+      const $result = document.createElement("div"); // 결과창
+      const rows = [];
+      let turn = "O";
+
+      // rows
+      // [
+      // [td, td, td],
+      // [td, td, td],
+      // [td, td, td],
+      // ]
+
+      // target === td 중 하나
+      const checkWinner = (target) => {
+        // 몇번째줄 몇번째칸인지 찾는 코드
+        let rowIndex;
+        let cellIndex;
+        // 이차원 배열은 거의 이중반복문!
+        rows.forEach((row, ri) => {
+          row.forEach((cell, ci) => {
+            if (cell === target) {
+              rowIndex = ri; // ri: row의 index (몇번째 줄)
+              cellIndex = ci; // ci: 몇 번째 칸
+            }
+          });
+        });
+
+        // 세 칸 다 채워졌나? 검사시, false로 시작, 승자가 있으면 true
+        let hasWinner = false;
+
+        // 가로줄 검사, 방금 내가 클릭한 칸의 가로줄 검사해서 다 똑같은 모양이면 true
+        if (rows[rowIndex][0].textContent === turn && rows[rowIndex][1].textContent === turn && rows[rowIndex][2].textContent === turn) {
+          hasWinner = true;
+        }
+
+        // 세로줄 검사
+        if (rows[0][cellIndex].textContent === turn && rows[1][cellIndex].textContent === turn && rows[2][cellIndex].textContent === turn) {
+          hasWinner = true;
+        }
+
+        // 대각선 검사
+        if (rows[0][0].textContent === turn && rows[1][1].textContent === turn && rows[2][2].textContent === turn) {
+          hasWinner = true;
+        }
+        if (rows[0][2].textContent === turn && rows[1][1].textContent === turn && rows[2][0].textContent === turn) {
+          hasWinner = true;
+        }
+        // 승자 있으면 true, 없으면 false 반환
+        return hasWinner;
+      };
+
+      const callback = (event) => {
+        // 칸이 이미 채워져있는가?
+        if (event.target.textContent !== "") {
+          console.log("빈칸이 아닙니다!");
+          return;
+        }
+        // 빈칸이면
+        console.log("빈칸입니다!");
+        event.target.textContent = turn;
+        const hasWinner = checkWinner(event.target);
+        // 승자가 있으면
+        if (hasWinner) {
+          $result.textContent = `${turn}님이 승리!`;
+          // 승리했으면 더이상 클릭안되게 remove해줌
+          $table.removeEventListener("click", callback);
+          return;
+        }
+        // 승자가 없으면 === 무승부 코드
+        // let count = 0;
+        let draw = true; // 기본적으로 처음부터 무승부라고 생각
+        rows.forEach((row) => {
+          row.forEach((cell) => {
+            // 한칸이라도 비어있으면 무승부 아님. false로 바꿔줌
+            if (!cell.textContent) {
+              draw = false;
+            }
+            // if (cell.textContent) {
+            // count += 1;
+            // }
+          });
+        });
+        if (draw) {
+          // if(count === 9){
+          $result.textContent = `무승부!`;
+          return;
+        }
+        // 승부도 안나고 무승부도 아니면 차례를 넘긴다
+        turn = turn === "X" ? "O" : "X";
+      };
+
+      for (let i = 0; i < 3; i++) {
+        const $tr = document.createElement("tr");
+        const cells = [];
+        for (let j = 0; j < 3; j++) {
+          const $td = document.createElement("td");
+          cells.push($td);
+          // td에 addEventListener을 제거하고 table에 addEventListener해줌
+          // $td.addEventListener('click', callback);
+          $tr.append($td);
+        }
+        rows.push(cells);
+        $table.append($tr);
+      }
+      // event는 table에 달았는데 click은 td에서 된다. 이벤트 버블링
+      $table.addEventListener("click", callback);
+      document.body.append($table);
+      document.body.append($result);
+    </script>
+  </body>
+</html>

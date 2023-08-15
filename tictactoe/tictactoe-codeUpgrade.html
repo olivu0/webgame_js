@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>틱택토 게임</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const { body } = document;
+      const $table = document.createElement("table");
+      const $result = document.createElement("div"); // 결과창
+      const rows = [];
+      let turn = "O";
+
+      // rows
+      // [
+      // [td, td, td],
+      // [td, td, td],
+      // [td, td, td],
+      // ]
+
+      // rowIndex는 tr이 갖고 있음. td의 부모태그(parentNode)의 rowIndex를 갖다 쓰면 됨
+      // target === td(칸) : 자체적으로 cellIndex 가짐(td는 알아서 자기가 몇번째 칸인지 알고 있음)
+      const checkWinner = (target) => {
+        const rowIndex = target.parentNode.rowIndex;
+        const cellIndex = target.cellIndex;
+
+        // 세 칸 다 채워졌나? 검사시, false로 시작, 승자가 있으면 true
+        let hasWinner = false;
+
+        // 가로줄 검사, 방금 내가 클릭한 칸의 가로줄 검사해서 다 똑같은 모양이면 true
+        if (rows[rowIndex][0].textContent === turn && rows[rowIndex][1].textContent === turn && rows[rowIndex][2].textContent === turn) {
+          hasWinner = true;
+        }
+
+        // 세로줄 검사
+        if (rows[0][cellIndex].textContent === turn && rows[1][cellIndex].textContent === turn && rows[2][cellIndex].textContent === turn) {
+          hasWinner = true;
+        }
+
+        // 대각선 검사
+        if (rows[0][0].textContent === turn && rows[1][1].textContent === turn && rows[2][2].textContent === turn) {
+          hasWinner = true;
+        }
+        if (rows[0][2].textContent === turn && rows[1][1].textContent === turn && rows[2][0].textContent === turn) {
+          hasWinner = true;
+        }
+        return hasWinner;
+      };
+
+      const callback = (event) => {
+        // 칸이 이미 채워져있는가?
+        if (event.target.textContent !== "") {
+          console.log("빈칸이 아닙니다!");
+          return;
+        }
+        // 빈칸이면
+        console.log("빈칸입니다!");
+        event.target.textContent = turn;
+        const hasWinner = checkWinner(event.target);
+        // 승자가 있으면
+        if (hasWinner) {
+          $result.textContent = `${turn}님이 승리!`;
+          $table.removeEventListener("click", callback);
+          return;
+        }
+        // 승자가 없으면 === 무승부 코드
+        // 한칸이라도 비어있으면 무승부 아님.
+        const draw = rows.flat().every((cell) => cell.textContent);
+        if (draw) {
+          $result.textContent = `무승부!`;
+          return;
+        }
+        // 승부도 안나고 무승부도 아니면 차례를 넘긴다
+        turn = turn === "X" ? "O" : "X";
+      };
+
+      for (let i = 0; i < 3; i++) {
+        const $tr = document.createElement("tr");
+        const cells = [];
+        for (let j = 0; j < 3; j++) {
+          const $td = document.createElement("td");
+          cells.push($td);
+          $tr.append($td);
+        }
+        rows.push(cells);
+        $table.append($tr);
+      }
+      $table.addEventListener("click", callback);
+      document.body.append($table);
+      document.body.append($result);
+    </script>
+  </body>
+</html>

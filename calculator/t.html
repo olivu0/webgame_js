@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <script>
+      // 고차 함수
+      const hof = (a) => (b) => (c) => {
+        return a + b * c;
+      };
+      // a = 3 first: (b) => (c) => { return 3 + (b*c); };
+      const first = hof(3);
+      // b = 4 second: (c) => { return 3 + (4*c); };
+      const second = first(4);
+      // c = 5 third: return 3 + (4*5);
+      const third = second(5);
+      console.log(third);
+
+      // if문 중첩
+      if (조건A) {
+        if (조건B) {
+          if (조건C) {
+          }
+        } else {
+          if (조건D) {
+            // 나는 어느 때 실행되지? 조건 a fasle, d true
+            if (조건E) {
+            } else {
+              // 나는? 조건 a false, d true, e false
+            }
+            // 나는? 조건 a false, d true
+          } else {
+          }
+        }
+      }
+
+      // 중첩 제거하는 법
+      const onClickNumber = (event) => {
+        if (operator) {
+          if (!numtwo) {
+            // 두번째 숫자 눌리기 전에 화면 지우기
+            $result.value = "";
+          }
+          numtwo += event.target.textContent;
+        } else {
+          numone += event.target.textContent;
+        }
+        $result.value += event.target.textContent; // 화면 표시
+      };
+
+      // 1. if문 다음에 나오는 공통된 절차를 각 분기점 내부에 넣는다
+      const onClickNumber = (event) => {
+        if (operator) {
+          if (!numtwo) {
+            $result.value = "";
+          }
+          numtwo += event.target.textContent;
+          $result.value += event.target.textContent;
+        } else {
+          numone += event.target.textContent;
+          $result.value += event.target.textContent;
+        }
+      };
+
+      // 2. 분기점에서 짧은 절차부터 실행하게 if문을 작성한다.(짧은 것을 위로 올린다)
+      const onClickNumber = (event) => {
+        if (!operator) {
+          numone += event.target.textContent;
+          $result.value += event.target.textContent;
+        } else {
+          if (!numtwo) {
+            $result.value = "";
+          }
+          numtwo += event.target.textContent;
+          $result.value += event.target.textContent;
+        }
+      };
+
+      // 3. 짧은 절차가 끝나면 return이나 break로 중단한다
+      // 4. else제거
+      const onClickNumber = (event) => {
+        if (!operator) {
+          numone += event.target.textContent;
+          $result.value += event.target.textContent;
+          return; // return이 나오고 나면 else가 필요없어짐 지워도 무방
+        }
+        if (!numtwo) {
+          $result.value = "";
+        }
+        numtwo += event.target.textContent;
+        $result.value += event.target.textContent;
+      };
+
+      function test() {
+        let result = "";
+        if (!a) {
+          result = "a";
+          result += "b";
+          return result;
+        }
+        if (!b) {
+          result = "c";
+        }
+        result += "b";
+        return result;
+      }
+    </script>
+  </body>
+</html>

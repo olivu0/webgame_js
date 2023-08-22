@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>calculator</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      #result {
+        width: 180px;
+        height: 50px;
+        margin: 5px;
+        text-align: right;
+      }
+      #operator {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+        text-align: center;
+      }
+      button {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <input readonly id="operator" />
+    <input readonly type="number" id="result" />
+    <div class="row">
+      <button id="num-7">7</button>
+      <button id="num-8">8</button>
+      <button id="num-9">9</button>
+      <button id="plus">+</button>
+    </div>
+    <div class="row">
+      <button id="num-4">4</button>
+      <button id="num-5">5</button>
+      <button id="num-6">6</button>
+      <button id="minus">-</button>
+    </div>
+    <div class="row">
+      <button id="num-1">1</button>
+      <button id="num-2">2</button>
+      <button id="num-3">3</button>
+      <button id="divide">/</button>
+    </div>
+    <div class="row">
+      <button id="clear">C</button>
+      <button id="num-0">0</button>
+      <button id="calculate">=</button>
+      <button id="multiply">x</button>
+    </div>
+    <script>
+      let numOne = "";
+      let operator = "";
+      let numTwo = "";
+      const $operator = document.querySelector("#operator");
+      const $result = document.querySelector("#result");
+
+      const onClickNumber = (number) => {
+        // return undefined; 생략되어 있음
+        // return 함수
+        return () => {
+          if (operator) {
+            numTwo += number;
+          } else {
+            numOne += number;
+          }
+          $result.value += number;
+        };
+      };
+
+      document.querySelector("#num-0").addEventListener("click", onClickNumber("0"));
+      // onClickNumber 함수 자리에 undefined가 들어가있는 것과 마찬가지
+      // 함수는 return 값을 안주면 기본값인 undefined가 들어감
+      // 버튼을 클릭하면 onClickNumber 함수가 실행됨. 근데 지금 return 안에 아무것도 없음
+      // return 함수 안에 어떤 동작을 할지 넣어주자
+      document.querySelector("#num-1").addEventListener("click", onClickNumber("1"));
+      document.querySelector("#num-2").addEventListener("click", onClickNumber("2"));
+      document.querySelector("#num-3").addEventListener("click", onClickNumber("3"));
+      document.querySelector("#num-4").addEventListener("click", onClickNumber("4"));
+      document.querySelector("#num-5").addEventListener("click", onClickNumber("5"));
+      document.querySelector("#num-6").addEventListener("click", onClickNumber("6"));
+      document.querySelector("#num-7").addEventListener("click", onClickNumber("7"));
+      document.querySelector("#num-8").addEventListener("click", onClickNumber("8"));
+      document.querySelector("#num-9").addEventListener("click", onClickNumber("9"));
+      document.querySelector("#num-9").addEventListener("click", () => {});
+    </script>
+  </body>
+</html>
